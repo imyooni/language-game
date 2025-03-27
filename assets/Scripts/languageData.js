@@ -30,141 +30,199 @@ export function vocab(language) {
 }
 
 
-export function cards(id) {
+export function cards(mode,id = null) {
   const list = {
-    error:  {
+    error: {
       name: `&nbsp;<span style="color: red;">Error</span>&nbsp;`,
-      type: "error",
+      type: 'error',
       cardColor: 'rgba(36, 36, 36, 0.41)',
+      round: 0,
+      probability: 0,
     },
-    healingI:  {
-      name: `HP&nbsp;<span style="color: GreenYellow;">+5%</span>&nbsp;`,
-      type: "buff",
+    healingI: {
+      name: `HP`,
+      type: 'hp',
       cardColor: 'rgb(219, 20, 60)',
+      value: ["per",[2,5]],
+      round: 1,
+      probability: 0.35,
     },
-    damageI:  {
-      name: `HP&nbsp;<span style="color: red;">-5%</span>&nbsp;`,
-      type: "debuff",
+    elixir: {
+      name: `HP`,
+      type: 'hp',
+      cardColor: 'rgb(20, 219, 126)',
+      value: ["per",[100,100]],
+      round: 1,
+      probability: 0.02,
+    },
+    maxhp: {
+      name: `Max HP`,
+      type: 'mhp',
       cardColor: 'rgb(219, 20, 60)',
+      value: ["per",[2,5]],
+      round: 0,
+      probability: 0.1,
     },
-    coins:  {
+    damageI: {
+      name: `HP`,
+      type: 'hp',
+      cardColor: 'rgb(219, 20, 60)',
+      value: ["per",[-2,-5]],
+      round: 0,
+      probability: 0.25,
+    },
+    coins: {
       name: `Coins`,
-      type: "special",
+      type: 'coins',
       cardColor: 'rgb(252, 219, 50)',
+      value: ["fixed",[5,15]],
+      round: 0,
+      probability: 0.1,
     },
-    key:  {
-      name: `Key`,
-      type: "special",
+    points: {
+      name: `Points`,
+      type: 'points',
+      cardColor: 'rgb(255,250,205)',
+      value: ["fixed",[5,20]],
+      round: 0,
+      probability: 0.3,
+    },
+    shield: {
+      name: `Shield`,
+      type: 'shield',
+      cardColor: 'rgb(176,196,222)',
+      value: ["fixed",[1,5]],
+      round: 0,
+      probability: 0.3,
+    },
+    books: {
+      name: `Books`,
+      type: 'books',
+      cardColor: 'rgb(123,104,238)',
+      value: ["fixed",[1,3]],
+      round: 0,
+      probability: 0.15,
+    },
+    key: {
+      name: `Key&nbsp;<span style="color: Gold;">+1</span>&nbsp;`,
+      type: 'special',
       cardColor: 'rgb(152,251,152)',
+      round: 1,
+      probability: 0.05,
     },
-    shop:  {
+    shop: {
       name: `Shop`,
-      type: "special",
+      type: 'shop',
       cardColor: 'rgb(32, 139, 189)',
+      round: 1,
+      probability: 0.15,
     },
-    chest:  {
+    chest: {
       name: `Chest`,
-      type: "special",
+      type: 'chest',
       cardColor: 'rgb(255,105,180)',
+      round: 1,
+      probability: 0.03,
     },
-    slime:  {
-      name: `---`,
-      type: "enemy",
+    battle: {
+      name: `Battle`,
+      type: 'battle',
       cardColor: 'rgb(255,140,0)',
+      round: 0,
+      probability: 0.5,
     },
   };
-  const items = Object.keys(list)
-  const foundItem = items[id]
-  let value 
-  if (foundItem === undefined) {
-    value = list.error
-  } else {
-    value = list[foundItem]
+  if (mode === "list") {
+    return list;
+  } else if (mode === "item") {
+    return list[id]
   }
- return value;
+}
+
+export function randomEvents(round,hp) {
+  let randomEvents = []
+  randomEvents.push(cards("item","battle"))
+  randomEvents.push(cards("item","battle"))
+  let events = Object.keys(cards("list"));
+  for (let i = 0; i < events.length; i++) {
+    const item = cards("item",events[i])
+    if (item.probability === 0) continue
+    if (item.round > round) continue
+      if (Math.random() < item.probability) {
+        if (item.value !== undefined) {
+          let name
+          let value = Math.floor(Math.random() * (item.value[1][1] - item.value[1][0] + 1)) + item.value[1][0]
+          item.value[1] = value
+          if (item.value[1] >= 1) {
+             if (item.value[0] === "fixed") {
+               item.name = `${item.name}&nbsp;<span style="color: GreenYellow;">+${item.value[1]}</span>&nbsp;`
+             } else if (item.value[0] === "per") {
+               item.name = `${item.name}&nbsp;<span style="color: Gold;">+${item.value[1]}%</span>&nbsp;`
+             }
+          } else {
+            if (item.value[0] === "fixed") {
+              item.name = `${item.name}&nbsp;<span style="color: red;">${item.value[1]}</span>&nbsp;`
+            } else if (item.value[0] === "per") {
+              item.name = `${item.name}&nbsp;<span style="color: red;">${item.value[1]}%</span>&nbsp;`
+            }
+          }
+      
+        }
+        randomEvents.push(item)
+        if (randomEvents.length === 6) break
+      }
+  }
+  return randomEvents
 }
 
 
-export function randomWord() {
-  let random_words = [
-    ["ro", "jo"], ["a", "zul"], ["ver", "de"], ["a", "marillo"], ["ne", "gro"],
-    ["blan", "co"], ["gris", "áceo"], ["na", "ranja"], ["ros", "ado"], ["mor", "ado"],
-    ["pe", "rro"], ["ga", "to"], ["ca", "ballo"], ["ra", "tón"], ["le", "ón"],
-    ["ti", "gre"], ["ele", "fante"], ["jir", "afa"], ["cer", "do"], ["ove", "ja"],
-    ["sol", "do"], ["lu", "na"], ["es", "trella"], ["cie", "lo"], ["mar", "te"],
-    ["pla", "neta"], ["cos", "mos"], ["ga", "laxia"], ["es", "pacio"], ["as", "tro"],
-    ["cas", "a"], ["ven", "tana"], ["puer", "ta"], ["te", "cho"], ["su", "elo"],
-    ["pa", "red"], ["silla", "s"], ["me", "sa"], ["cam", "a"], ["có", "modo"],
-    ["li", "bro"], ["cuad", "erno"], ["lá", "piz"], ["bo", "ligrafo"], ["ho", "ja"],
-    ["tij", "eras"], ["re", "loj"], ["mo", "chila"], ["ba", "rril"], ["vi", "no"],
-    ["ca", "fé"], ["te", "ro"], ["le", "che"], ["a", "gua"], ["ju", "go"],
-    ["nue", "z"], ["pa", "pa"], ["to", "mate"], ["ce", "bolla"], ["le", "chuga"],
-    ["za", "najo"], ["fre", "sa"], ["man", "zana"], ["u", "va"], ["pe", "ra"],
-    ["na", "ránja"], ["me", "lón"], ["pla", "tano"], ["san", "día"], ["ki", "wi"],
-    ["sol", "do"], ["cie", "lo"], ["a", "re", "na"], ["ve", "la"], ["bra", "sa"],
-    ["bos", "que"], ["rie", "go"], ["ti", "e", "rra"], ["fo", "go"], ["bar", "co"],
-    ["au", "to"], ["mo", "to"], ["bi", "ci"], ["avión", "es"], ["tren", "es"],
-    ["luz", "es"], ["e", "ner", "gía"], ["te", "le", "vi", "sor"], ["mo", "ni", "tor"], ["ra", "dio"],
-    ["in", "ter", "net"], ["te", "clado"], ["mo", "vi"], ["com", "pu"], ["ga", "me"],
-    ["qui", "li"], ["xu", "lo"], ["zo", "quet"], ["fru", "frú"], ["cha", "flán"],
-    ["ba", "rro"], ["drú", "mulo"], ["es", "cra", "che"], ["hu", "rre"], ["jó", "cara"],
-    ["lu", "mi", "no"], ["ca", "lá", "mo"], ["ce", "rri", "llo"], ["ca", "ní", "culo"], ["zán", "ja"],
-    ["e", "spec", "tro"], ["tra", "pí", "che"], ["gui", "jón"], ["je", "ne", "quén"], ["lan", "gio"],
-    ["mon", "tí", "culo"], ["pár", "a", "mo"], ["tre", "be", "jo"], ["ur", "di", "mre"], ["vol", "ú", "men"],
-    ["xa", "guas"], ["yé", "naga"], ["zo", "di", "a", "co"], ["a", "ce", "bia"], ["bi", "zo", "rral"],
-    ["cla", "vi", "cu", "la"], ["de", "si", "dí", "a"], ["en", "tre", "mes"], ["far", "fu", "lla"], ["gor", "gó", "nea"],
-    ["he", "mi", "sti", "quio"], ["iñi", "qui"], ["ja", "ru", "pa"], ["ka", "wa", "ri"], ["la", "bo", "ro"],
-    ["ma", "ce", "ra"], ["ne", "bu", "lo"], ["o", "que", "dad"], ["pa", "li", "to"], ["qui", "dó", "me"],
-    ["re", "sin", "ga"], ["so", "ta", "na"], ["te", "mú", "culo"], ["ul", "ti", "mo"], ["va", "ga", "do"],
-    ["xa", "na", "do"], ["yem", "bi", "to"], ["ze", "ta", "bé"], ["a", "bri", "go"], ["bru", "ji", "lla"],
-    ["co", "me", "jén"], ["des", "ca", "bal"], ["e", "strí", "gil"], ["fá", "ru", "co"], ["gu", "mi", "fi"],
-    ["hi", "ga", "do"], ["i", "dí", "li", "co"], ["jó", "ve", "nes"], ["kra", "ke", "no"], ["lo", "ba", "to"],
-    ["mi", "si", "vo"], ["no", "me", "lo"], ["ó", "bi", "ce"], ["pa", "ti", "né"], ["qui", "lo", "pi"],
-    ["re", "ta", "bla"], ["su", "cli", "ne"], ["tra", "fi", "ca"], ["u", "ve", "ce"], ["ve", "lá", "men"],
-    ["wu", "xia"], ["xi", "le", "ma"], ["yo", "go", "te"], ["ze", "bra", "do"], ["a", "que", "ce"],
-    ["ba", "tí", "co"], ["ce", "ni", "zo"], ["de", "li", "ne"], ["e", "te", "reo"], ["fu", "lan", "ito"],
-    ["gu", "a", "cha"], ["ha", "mbrí", "o"], ["i", "de", "al"], ["ja", "cob", "ea"], ["ki", "lo", "mo"],
-    ["a", "ba", "rro"], ["a", "ca", "cio"], ["a", "na", "fra"], ["a", "só", "li"], ["a", "te", "nor"],
-    ["ba", "ti", "ber"], ["ber", "me", "jo"], ["bis", "bi", "seo"], ["bo", "rra", "je"], ["bra", "món"],
-    ["ca", "ve", "do"], ["ce", "le", "men"], ["ce", "si", "ga"], ["cha", "za", "na"], ["ci", "me", "ra"],
-    ["co", "li", "ne"], ["co", "ru", "cho"], ["cri", "so", "lal"], ["cu", "li", "men"], ["de", "li", "na"],
-    ["de", "ra", "me"], ["di", "ga", "me"], ["do", "li", "men"], ["e", "pi", "so"], ["e", "strí", "gil"],
-    ["fi", "ne", "za"], ["fri", "vo", "lo"], ["fu", "lan", "to"], ["ga", "li", "ar"], ["go", "zo", "so"],
-    ["gra", "nu", "lo"], ["gue", "ru", "le"], ["hi", "ga", "da"], ["hi", "pe", "ro"], ["ho", "ci", "co"],
-    ["hu", "me", "do"], ["i", "nó", "pi"], ["ja", "ra", "be"], ["ja", "sén", "se"], ["jo", "ca", "ra"],
-    ["ju", "gla", "re"], ["lan", "gio"], ["li", "cu", "lo"], ["lo", "za", "no"], ["lu", "bi", "to"],
-    ["ma", "ce", "ro"], ["ma", "jo", "le"], ["me", "ce", "dor"], ["mo", "ri", "lo"], ["na", "i", "pe"],
-    ["ne", "bi", "na"], ["ni", "e", "bla"], ["nu", "be", "la"], ["o", "to", "nal"], ["pa", "li", "to"],
-    ["pa", "ne", "go"], ["pe", "ce", "ño"], ["pi", "la", "stre"], ["po", "zo", "na"], ["pu", "la", "cro"],
-    ["que", "me", "ro"], ["qui", "la", "tro"], ["ra", "bi", "eta"], ["re", "to", "na"], ["ri", "ga", "to"],
-    ["ro", "do", "ra"], ["ru", "ge", "ro"], ["sa", "lu", "bre"], ["se", "li", "ne"], ["so", "bi", "na"],
-    ["su", "fra", "go"], ["ta", "pi", "ar"], ["ti", "ra", "no"], ["to", "ri", "vo"], ["tras", "go"],
-    ["tri", "fa", "cio"], ["tu", "mú", "lo"], ["ul", "ti", "mo"], ["ur", "di", "dor"], ["va", "ga", "mo"],
-    ["va", "ne", "za"], ["ve", "lo", "za"], ["vi", "bra", "to"], ["vi", "da", "go"], ["xa", "gu", "as"],
-    ["xo", "gue", "ro"], ["za", "mo", "ra"], ["za", "rza", "mo"], ["zo", "pa", "ra"], ["zo", "que", "te"],
-    ["za", "hu", "rda"], ["a", "ce", "bada"], ["bra", "mi", "do"], ["da", "ri", "ga"], ["e", "spor", "so"],
-    ["fra", "ga", "rio"], ["hu", "me", "ral"], ["la", "be", "na"], ["lu", "mi", "no"], ["mó", "de", "lo"],
-    ["pe", "rro"], ["ga", "to"], ["ca", "ballo"], ["ra", "tón"], ["le", "ón"],
-    ["ti", "gre"], ["ele", "fante"], ["jir", "afa"], ["cer", "do"], ["ove", "ja"],
-    ["a", "guila"], ["bu", "ho"], ["cis", "ne"], ["fo", "ca"], ["man", "tarraya"],
-    ["tu", "ru", "go"], ["ca", "mien"], ["o", "so"], ["li", "e", "bre"], ["rin", "ce", "ro"],
-    ["mo", "rse"], ["hu", "rón"], ["pin", "güi", "no"], ["do", "lfin"], ["ba", "llu", "na"],
-    ["mar", "i", "po", "sa"], ["ca", "ma", "león"], ["i", "guana"], ["ser", "pien", "te"], ["cu", "e", "rvo"],
-    ["go", "ri", "la"], ["ko", "a", "la"], ["li", "ce"], ["mos", "ca"], ["a", "be", "ja"],
-    ["te", "rmi", "ta"], ["e", "scar", "ba", "jo"], ["a", "vi", "struz"], ["me", "re", "na"],
-    ["za", "ra", "go"], ["ti", "bu", "rón"], ["ca", "rá", "col"], ["gril", "lo"], ["lan", "gri", "ta"],
-    ["co", "co", "dri", "lo"], ["tor", "tu", "ga"], ["ci", "e", "rvo"], ["ar", "di", "lla"],
-    ["mur", "cié", "la", "go"], ["tor", "o"], ["cab", "ra"], ["gallo"], ["ga", "vin"],
-    ["es", "tre", "lla", "de", "mar"], ["e", "ri", "zo"], ["es", "co", "rpi", "ón"], ["lan", "gu", "sto"],
-    ["bo", "ga", "van", "te"], ["ca", "rpa"], ["pa", "pa", "ya"], ["mo", "ra", "yo"],
-    ["pe", "ce", "ri", "llo"], ["te", "tardó"], ["ba", "boa"], ["ba", "gua"], ["a", "chi", "pa"],
-    ["pe", "li", "cano"], ["ci", "go", "ña"], ["cu", "ervo"], ["gol", "dri"], ["a", "lbri", "je"],
-    ["li", "bro", "ro"], ["hip", "po", "po", "tamo"], ["gi", "ra", "fa"], ["a", "lio", "ro"],
-    ["o", "so", "po", "lar"], ["la", "sa", "ña"], ["bo", "ga", "van", "te"], ["ca", "mello"],
-    ["li", "bro", "ro"], ["tur", "pi", "al"], ["loro"], ["pa", "to"], ["gi", "ra", "fa"],
-    ["pin", "güi", "no"], ["gato"], ["mo", "nito"], ["ca", "mino"], ["a", "ra", "ra"],
-    ["ma", "car", "co"], ["tuc", "án"], ["flo", "ro"], ["ve", "no", "so"], ["mo", "ra", "yo"]
+export function randomWord(prevWord) {
+  const random_words = [
+    "amor", "casa", "libro", "mesa", "árbol", "cielo", "felicidad", "coche", "perro", "gato", 
+    "ciudad", "trabajo", "familia", "amigo", "país", "música", "sol", "luna", "mar", "montaña", 
+    "ventana", "puerta", "fuego", "agua", "comida", "ropa", "teléfono", "computadora", "papel", 
+    "silla", "zapato", "hospital", "escuela", "universidad", "cocina", "baño", "jardín", "película", 
+    "televisión", "vida", "muerte", "tiempo", "noche", "día", "luz", "oscuridad", "camino", "sendero", 
+    "tren", "avión", "barco", "bicicleta", "pelota", "sueño", "realidad", "historia", "memoria", 
+    "cultura", "arte", "lienzo", "pintura", "escultura", "fotografía", "espejo", "sombrero", 
+    "camisa", "pantalón", "falda", "diseño", "plan", "idea", "proyecto", "dibujo", "foto", 
+    "poesía", "canción", "sonrisa", "llanto", "corazón", "mente", "cuerpo", "alma", "espíritu", 
+    "sensación", "pensamiento", "pregunta", "respuesta", "acuerdo", "conflicto", "estrés", "paz", 
+    "guerra", "caos", "equilibrio", "movimiento", "estabilidad", "crecimiento", "desarrollo", 
+    "avance", "retroceso", "futuro", "pasado", "presente", "esperanza", "desesperación", "confianza", 
+    "miedo", "valentía", "temor", "felicidad", "tristeza", "odio", "amor", "compasión", "generosidad", 
+    "egoísmo", "solidaridad", "sociedad", "gente", "familia", "vecino", "trabajador", "jefe", "empleado", 
+    "empresa", "negocio", "contrato", "acuerdo", "economía", "dinero", "moneda", "banco", "mercado", 
+    "comercio", "intercambio", "inversión", "ahorro", "gasto", "riesgo", "seguridad", "crisis", "oportunidad", 
+    "tarea", "trabajo", "esfuerzo", "recompensa", "exito", "fracaso", "hombre", "mujer", "niño", "adolescente", 
+    "adulto", "anciano", "persona", "individuo", "grupo", "comunidad", "nación", "planeta", "universo", 
+    "tiempo", "espacio", "dimensión", "ciencia", "tecnología", "invención", "innovación", "descubrimiento", 
+    "teoría", "experimento", "investigación", "prueba", "error", "práctica", "experiencia", "conocimiento", 
+    "sabiduría", "educación", "aprendizaje", "escuela", "universidad", "profesor", "alumno", "estudiante", 
+    "materia", "asignatura", "tarea", "examen", "estudio", "colegio", "aula", "pupitre", "silla", "escritorio", 
+    "papelera", "libreta", "bolígrafo", "lapicero", "marcador", "carpeta", "cuaderno", "mochila", "agenda", 
+    "organizador", "tiempo", "horario", "programa", "reloj", "calendario", "día", "semana", "mes", "año", 
+    "estación", "verano", "invierno", "primavera", "otoño", "día", "noche", "mañana", "tarde", "futuro", 
+    "pasado", "presente", "luna", "sol", "estrella", "cielo", "nube", "viento", "tormenta", "huracán", "ciclón", 
+    "lluvia", "niebla", "frío", "calor", "temperatura", "clima", "terremoto", "volcán", "desastre", "catástrofe", 
+    "planeta", "tierras", "mar", "océano", "río", "lago", "pueblo", "ciudad", "metrópoli", "aldea", "zona", 
+    "barrio", "vecindad", "rural", "urbano", "suburbio", "periferia", "centro", "gente", "pueblo", "familia", 
+    "pareja", "matrimonio", "hermano", "hermana", "padre", "madre", "hijo", "hija", "abuelo", "abuela", 
+    "tío", "tía", "primo", "prima", "suegro", "suegra", "yerno", "nuera", "cuñado", "cuñada", "suegro", 
+    "compañero", "compañera", "amigo", "amistad", "relación", "confianza", "amor", "cariño", "envidia", 
+    "celos", "deseo", "pasión", "respeto", "odio", "odio", "venganza", "perdón", "reconciliación", "ayuda", 
+    "apoyo", "solidaridad", "servicio", "cuidado", "protección", "seguridad", "autonomía", "libertad", 
+    "justicia", "igualdad", "equidad", "derechos", "deberes", "ley", "gobierno", "estado", "política", 
+    "economía", "sociedad", "educación", "sanidad", "salud", "derechos humanos", "libertad", "opresión", 
+    "dictadura", "democracia", "sistema", "ideología", "moral", "ética", "especie", "evolución", "animal", 
+    "planta", "vegetal", "fósil", "mamífero", "insecto", "pájaro", "peces", "reptil", "anfibio", "animal", 
+    "crustáceo", "salvaje", "doméstico", "endémico", "especie", "fuerza", "energía", "potencia", "magnetismo", 
+    "electricidad", "físico", "químico", "biológico", "teórico", "experimental", "medición", "prueba", 
+    "cálculo", "hipótesis", "teoría", "investigación", "científico", "investigador", "descubrimiento", 
+    "proceso", "resultado", "avance", "prueba", "experimento"
 ];
-  let randomWord = random_words[Math.floor(Math.random() * random_words.length)];
-  return randomWord
+
+  let filteredWords = random_words.filter(word => word !== prevWord);
+  let randomWord = filteredWords[Math.floor(Math.random() * filteredWords.length)];
+  return randomWord;
 }

@@ -24,6 +24,18 @@ html {
     font-style: normal;
 }
 
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
 .gameBackground {
     width: 100%;
     height: 100%;
@@ -105,12 +117,12 @@ html {
 
 .enemy-hp-bar-container {
     position: absolute; /* Keep absolute positioning */
-    top: 25%; /* Adjust top spacing */
+    top: 42%; /* Adjust top spacing */
     width: 30%; /* Adjust width as needed */
     height: 20px; /* Adjust height as needed */
     background: #222; /* Dark background */
     border-radius: 10px;
-    z-index: 0;
+    z-index: 20;
     overflow: hidden;
     border: 2px solid black;
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
@@ -142,7 +154,7 @@ html {
 
 .enemy-hp-text {
     position: absolute;
-    top: 175px;
+    top: 303px;
     font-size: 16px;
     color: white;
     font-family: 'DefaultFont';
@@ -160,7 +172,7 @@ html {
 
 .enemy-name-text {
     position: absolute;
-    top: 155px;
+    top: 283px;
     font-size: 16px;
     color: white;
     font-family: 'DefaultFont';
@@ -233,15 +245,14 @@ html {
     image-rendering: pixelated;
 }
 
-.strength {
+.shield {
     position: absolute;
-    background-image: url('./assets/Sprites/strength.png');
+    background-image: url('./assets/Sprites/shield.png');
     background-size: 24px 24px;
     background-repeat: no-repeat;
-    background-position: 5px center;
-    padding-bottom: 2px;
-    padding-left: 34px;
-    color: #d40000;
+    background-position: left center; 
+    padding-left: 30px;
+    color: #B0C4DE;
     font-family: 'DefaultFont';
     font-size: 16px;
     user-select: none;
@@ -250,18 +261,60 @@ html {
         -1px -1px 0px black,
         1px -1px 0px black,
         -1px 1px 0px black;
-    top: 11%;
-    left: 5px;
-    width: 200px;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
     height: 42px;
-    text-align: center;
     display: flex;
-    justify-content: left;
-    align-items: center;
+    justify-content: center;
+    align-items: center; 
+    z-index: 5;
+    transition: opacity 0.5s ease-out;
+    opacity: 0;
+    image-rendering: pixelated;
+}
+
+
+.books {
+    position: absolute;
+    background-image: url('./assets/Sprites/books.png');
+    user-select: none;
+    bottom: 26%;
+    left: 20px;
+    width: 119px;
+    height: 86px;
     z-index: 5;
     transition: opacity 0.5s ease-out; /* Remove transition on transform */
     opacity: 0;
     image-rendering: pixelated;
+}
+
+.booksNumber {
+    position: absolute;
+    min-width: 30px;
+    height: 32px;
+    font-family: 'DefaultFont';
+    font-size: 14px;
+    color: white;
+    border: 1px solid black;
+    background: #7B68EE;
+    border-radius: 8px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    z-index: 10; /* Higher than books */
+    text-shadow:
+      1px 1px 0px black,
+      -1px -1px 0px black,
+      1px -1px 0px black,
+      -1px 1px 0px black;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%); /* Center horizontally */
 }
 
 .score {
@@ -303,6 +356,7 @@ html {
     align-items: center;
     justify-content: center;
     margin: 20px auto;
+    z-index: 9000;
 }
 
 .card {
@@ -319,7 +373,7 @@ html {
     align-items: center;
     justify-content: center;
     user-select: none;
-    z-index: 1;
+    z-index: 9000;
     text-shadow:
     1px 1px 0px black,
     -1px -1px 0px black,
@@ -363,22 +417,64 @@ html {
     box-shadow: 0 0 10px 2px var(--borderColor);
 }
 
+.table {
+    width: 360px;
+    height: 230px;
+    border: 1px solid black;
+    background-color: #6d4518; /* Dark gray body */
+    border-radius: 15px; /* Rounded corners for the body */
+    position: absolute; /* For positioning the screen and stand */
+    bottom: 0%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    z-index: 0;
+    opacity: 0;
+  }
 
 .monitor {
-    width: 360px;
+    width: 370px;
     height: 200px;
     border: 1px solid black;
     background-color: #333; /* Dark gray body */
     border-radius: 15px; /* Rounded corners for the body */
     position: absolute; /* For positioning the screen and stand */
-    bottom: 20%;
+    bottom: 39%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Shadow for depth */
     transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    z-index: 2;
     opacity: 0;
   }
 
+  .monitorStand {
+    width: 50px;
+    height: 80px;
+    border: 1px solid black;
+    background-color: #333; /* Dark gray body */
+    border-radius: 0px 0px 10px 10px; /* Rounded corners for the body */
+    position: absolute; /* For positioning the screen and stand */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    z-index: 5;
+    left: 50%;
+    bottom: -40%;
+    transform: translateX(-50%);
+  }
+
+  .monitorStandBottom {
+    width: 80px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: #333; /* Dark gray body */
+    border-radius: 50px; /* Rounded corners for the body */
+    position: absolute; /* For positioning the screen and stand */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    z-index: 0;
+    left: 50%;
+    bottom: -46%;
+    transform: translateX(-50%);
+  }
+
   .screen {
-    width: 90%;
+    width: 92%;
     height: 68%;
     border: 1px solid black;
     background-color: #40c6dd; /* Blue screen */
@@ -387,7 +483,8 @@ html {
     display: flex;
     justify-content: center; /* Centering content horizontally */
     align-items: center; /* Centering content vertically */
-    padding: 10px; /* Padding to ensure the words don't touch the screen edges */
+    padding: 5px; /* Padding to ensure the words don't touch the screen edges */
+    z-index: 5;
     position: relative;
   }
 
@@ -401,6 +498,7 @@ html {
     top: 0%;
     padding-left: 10px; /* Adds extra space on the left */
     padding-right: 10px; /* Adds extra space on the right */
+    width: 10px;
     height: 32px;
     font-family: 'DefaultFont';
     font-size: 14px;
@@ -424,22 +522,28 @@ html {
 
   .syllable-container {
     position: absolute; /* Keeps it in place */
-    bottom: 22%; /* Adjust this to position it properly */
+    bottom: 20%; /* Adjust this to position it properly */
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
+    width: 90%;
     min-height: 40px; /* Ensures space for syllables even when empty */
     display: flex;
     z-index: 20;
-    gap: 5px;
+    gap: 2px;
     justify-content: center;
     flex-wrap: wrap;
 }
+
+.syllableBorder:hover {
+    box-shadow: 0 0 10px 2px var(--borderColor);
+}
+
 
   .wordBorder {
     width: auto; /* Let the width be determined by the content */
     padding-left: 10px; /* Adds extra space on the left */
     padding-right: 10px; /* Adds extra space on the right */
+    width: 10px;
     height: 32px;
     font-family: 'DefaultFont';
     font-size: 14px;
@@ -464,13 +568,13 @@ html {
 
   .word-container {
     position: absolute; /* Keeps it in place */
-    bottom: 26.5%; /* Adjust this to position it properly */
+    bottom: 34%; 
     left: 50%;
     transform: translateX(-50%);
-    width: 100%; /* Ensures it doesn't shrink */
+    width: 90%;; /* Ensures it doesn't shrink */
     min-height: 40px; /* Ensures space for words even when empty */
     display: flex;
-    gap: 5px;
+    gap: 2px;
     z-index: 20;
     justify-content: center;
     flex-wrap: wrap;
