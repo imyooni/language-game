@@ -1,0 +1,479 @@
+
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #231942;
+    overflow: auto;
+    min-height: 100%;
+}
+
+
+html {
+    height: 100%;
+    overflow: auto;
+}
+
+
+@font-face {
+    font-family: 'DefaultFont';
+    src: url('./assets/Fonts/DefaultFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.gameBackground {
+    width: 100%;
+    height: 100%;
+    background: #231942;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 0;
+}
+
+.secondary-background {
+    width: 386px;
+    height: 750px;
+    background: #5e548e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    position: relative;
+}
+
+.hp-bar-container {
+    position: absolute; /* Keep absolute positioning */
+    top: 30px; /* Adjust top spacing */
+    width: 80%; /* Adjust width as needed */
+    height: 20px; /* Adjust height as needed */
+    background: #222; /* Dark background */
+    border-radius: 10px;
+    z-index: 0;
+    overflow: hidden;
+    border: 2px solid black;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hp-bar {
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    width: 100%; /* Start at full health */
+    height: 100%;
+    background: #DC143C;
+}
+
+.hp-text {
+    position: absolute;
+    top: 18px;
+    font-size: 16px;
+    color: white;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    z-index: 100;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+}
+
+.hp-bar::before {
+    content: "";
+    position: absolute;
+    top: 50%; /* Position the gradient below the text */
+    left: 0;
+    width: 200%; /* Start at full health */
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 20%, rgba(58, 58, 58, 0.452) 50%, rgba(0, 0, 0, 0.1) 80%);
+    z-index: -1; /* Place the gradient behind the text */
+    transform: translateY(-50%); /* Center the gradient */
+}
+
+.enemy-hp-bar-container {
+    position: absolute; /* Keep absolute positioning */
+    top: 25%; /* Adjust top spacing */
+    width: 30%; /* Adjust width as needed */
+    height: 20px; /* Adjust height as needed */
+    background: #222; /* Dark background */
+    border-radius: 10px;
+    z-index: 0;
+    overflow: hidden;
+    border: 2px solid black;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.enemy-hp-bar {
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    width: 100%; /* Start at full health */
+    height: 100%;
+    background: #dc7514;
+}
+
+.enemy-hp-bar::before {
+    content: "";
+    position: absolute;
+    top: 50%; /* Position the gradient below the text */
+    left: 0;
+    width: 200%; /* Start at full health */
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 20%, rgba(58, 58, 58, 0.452) 50%, rgba(0, 0, 0, 0.1) 80%);
+    z-index: -1; /* Place the gradient behind the text */
+    transform: translateY(-50%); /* Center the gradient */
+}
+
+
+.enemy-hp-text {
+    position: absolute;
+    top: 175px;
+    font-size: 16px;
+    color: white;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    z-index: 101;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+}
+
+.enemy-name-text {
+    position: absolute;
+    top: 155px;
+    font-size: 16px;
+    color: white;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    z-index: 100;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+}
+
+.startGame {
+    position: absolute;
+    color: white;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    border: 2px solid black;
+    transform: translateX(0%) translateY(0%) ;
+    background-color: #20267c;
+    width: 200px;
+    height: 42px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    opacity: 0;
+    image-rendering: pixelated;
+}
+
+.coins {
+    position: absolute;
+    background-image: url('./assets/Sprites/zuljaCoin.png');
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    padding-bottom: 2px;
+    padding-left: 34px;
+    color: #fcd600;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    top: 7%;
+    left: 5px;
+    width: 200px;
+    height: 42px;
+    text-align: center;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    z-index: 5;
+    transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    opacity: 0;
+    image-rendering: pixelated;
+}
+
+.strength {
+    position: absolute;
+    background-image: url('./assets/Sprites/strength.png');
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    padding-bottom: 2px;
+    padding-left: 34px;
+    color: #d40000;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    top: 11%;
+    left: 5px;
+    width: 200px;
+    height: 42px;
+    text-align: center;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    z-index: 5;
+    transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    opacity: 0;
+    image-rendering: pixelated;
+}
+
+.score {
+    position: absolute;
+    background-image: url('./assets/Sprites/KOR.png');
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    padding-bottom: 2px;
+    padding-left: 34px;
+    color: #fcd600;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    top: 7%;
+    right: 10px;
+    width: auto;
+    height: 42px;
+    text-align: center;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    z-index: 5;
+    transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    opacity: 0;
+    image-rendering: pixelated;
+}
+
+#card-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping into multiple rows */
+    gap: 8px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.card {
+    width: 115px;
+    height: 150px;
+    font-family: 'DefaultFont';
+    font-size: 14px;
+    color: white;
+    border: 1px solid black;
+    background: #be95c4;
+    border-radius: 8px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    z-index: 1;
+    text-shadow:
+    1px 1px 0px black,
+    -1px -1px 0px black,
+    1px -1px 0px black,
+    -1px 1px 0px black;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 50%; /* Position the gradient below the text */
+    left: 0;
+    width: 250%;
+    height: 200%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 20%, rgba(58, 58, 58, 0.452) 50%, rgba(0, 0, 0, 0.1) 80%);
+    z-index: -1; /* Place the gradient behind the text */
+    transform: translateY(-50%); /* Center the gradient */
+}
+
+
+/* Ensures max 2 rows */
+#card-container .card:nth-child(n+4) {
+    order: 1; /* Push extra cards to the next row */
+}
+
+
+:root {
+    --borderColor: #e0b1cb; 
+}
+
+
+.card:hover {
+    box-shadow: 0 0 10px 2px var(--borderColor);
+}
+
+
+.monitor {
+    width: 360px;
+    height: 200px;
+    border: 1px solid black;
+    background-color: #333; /* Dark gray body */
+    border-radius: 15px; /* Rounded corners for the body */
+    position: absolute; /* For positioning the screen and stand */
+    bottom: 20%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    transition: opacity 0.5s ease-out; /* Remove transition on transform */
+    opacity: 0;
+  }
+
+  .screen {
+    width: 90%;
+    height: 68%;
+    border: 1px solid black;
+    background-color: #40c6dd; /* Blue screen */
+    margin: 10% auto; /* Centering the screen */
+    border-radius: 8px; /* Rounded screen edges */
+    display: flex;
+    justify-content: center; /* Centering content horizontally */
+    align-items: center; /* Centering content vertically */
+    padding: 10px; /* Padding to ensure the words don't touch the screen edges */
+    position: relative;
+  }
+
+  /* Optional: Add a glow effect to the screen for some extra style */
+  .screen.glow {
+    box-shadow: 0 0 30px rgba(0, 174, 255, 0.8);
+  }
+
+  .syllableBorder {
+    width: auto; /* Let the width be determined by the content */
+    top: 0%;
+    padding-left: 10px; /* Adds extra space on the left */
+    padding-right: 10px; /* Adds extra space on the right */
+    height: 32px;
+    font-family: 'DefaultFont';
+    font-size: 14px;
+    color: white;
+    border: 1px solid black;
+    background: #c4b995;
+    border-radius: 8px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    z-index: 1;
+    text-shadow:
+      1px 1px 0px black,
+      -1px -1px 0px black,
+      1px -1px 0px black,
+      -1px 1px 0px black;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .syllable-container {
+    position: absolute; /* Keeps it in place */
+    bottom: 22%; /* Adjust this to position it properly */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    min-height: 40px; /* Ensures space for syllables even when empty */
+    display: flex;
+    z-index: 20;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+  .wordBorder {
+    width: auto; /* Let the width be determined by the content */
+    padding-left: 10px; /* Adds extra space on the left */
+    padding-right: 10px; /* Adds extra space on the right */
+    height: 32px;
+    font-family: 'DefaultFont';
+    font-size: 14px;
+    color: white;
+    border: 1px solid black;
+    background: #555555;
+    border-radius: 8px;
+    display: grid;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    pointer-events: none; 
+    z-index: 1;
+    text-shadow:
+      1px 1px 0px black,
+      -1px -1px 0px black,
+      1px -1px 0px black,
+      -1px 1px 0px black;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .word-container {
+    position: absolute; /* Keeps it in place */
+    bottom: 26.5%; /* Adjust this to position it properly */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%; /* Ensures it doesn't shrink */
+    min-height: 40px; /* Ensures space for words even when empty */
+    display: flex;
+    gap: 5px;
+    z-index: 20;
+    justify-content: center;
+    flex-wrap: wrap;
+    pointer-events: none; /* Ensures it doesn't interfere with clicks */
+}
+
