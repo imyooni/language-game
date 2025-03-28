@@ -53,6 +53,19 @@ html {
     }
 }
 
+@media only screen and (orientation: portrait) {
+    body {
+        display: none; /* Hide body content in portrait mode */
+    }
+}
+
+/* Landscape Mode */
+@media only screen and (orientation: landscape) {
+    body {
+        display: flex; /* Show content only in landscape */
+    }
+}
+
 .languageButton {
     color: white;
     font-family: 'DefaultFont';
