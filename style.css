@@ -1,5 +1,3 @@
-
-
 body {
     margin: 0;
     display: flex;
@@ -10,12 +8,10 @@ body {
     min-height: 100%;
 }
 
-
 html {
     height: 100%;
     overflow: auto;
 }
-
 
 @font-face {
     font-family: 'DefaultFont';
@@ -36,18 +32,6 @@ html {
     animation: shake 0.3s ease-in-out;
 }
 
-.gameBackground {
-    width: 100%;
-    height: 100%;
-    background: #231942;
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    z-index: 0;
-}
-
 .secondary-background {
     width: 386px;
     height: 750px;
@@ -61,12 +45,68 @@ html {
     position: relative;
 }
 
+/* Landscape Mode */
+@media only screen and (orientation: landscape) {
+    .secondary-background {
+        width: 750px;  /* Adjust width for landscape */
+        height: 386px; /* Adjust height for landscape */
+    }
+}
+
+.languageButton {
+    color: white;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    border: 2px solid black;
+    background-color: #9f86c0;
+    width: 200px;
+    height: 42px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+    top: 50%;
+    transform: translate(0%, -50%); /* Perfect center */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    image-rendering: pixelated;
+    border-radius: 10px;
+    gap: 8px;
+}
+
+.languageButton:hover {
+    box-shadow: 0 0 10px 2px var(--borderColor);
+}
+
+.languageButton img {
+    width: 24px;  
+    height: 24px;
+}
+
+.languageSelector {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    z-index: 5000;
+    gap: 10px; 
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    opacity: 0;
+}
+
 .hp-bar-container {
-    position: absolute; /* Keep absolute positioning */
-    top: 30px; /* Adjust top spacing */
-    width: 80%; /* Adjust width as needed */
-    height: 20px; /* Adjust height as needed */
-    background: #222; /* Dark background */
+    position: absolute; 
+    top: 30px;
+    width: 80%; 
+    height: 20px;
+    background: #222;
     border-radius: 10px;
     z-index: 0;
     overflow: hidden;
@@ -186,32 +226,6 @@ html {
         -1px 1px 0px black;
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     opacity: 0;
-}
-
-.startGame {
-    position: absolute;
-    color: white;
-    font-family: 'DefaultFont';
-    font-size: 16px;
-    user-select: none;
-    text-shadow:
-        1px 1px 0px black,
-        -1px -1px 0px black,
-        1px -1px 0px black,
-        -1px 1px 0px black;
-    border: 2px solid black;
-    transform: translateX(0%) translateY(0%) ;
-    background-color: #20267c;
-    width: 200px;
-    height: 42px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
-    transition: opacity 0.5s ease-out; /* Remove transition on transform */
-    opacity: 0;
-    image-rendering: pixelated;
 }
 
 .rounds {

@@ -127,7 +127,7 @@ export function cards(mode,id = null) {
     battle: {
       name: `Battle`,
       type: 'battle',
-      cardColor: 'rgb(255,140,0)',
+      cardColor: 'rgba(80, 80, 80)',
       round: 0,
       probability: 0.5,
     },
@@ -139,10 +139,52 @@ export function cards(mode,id = null) {
   }
 }
 
+  function randomBattle(item) {
+   let battleTypes = {
+     colors: {
+      name: "Colors",
+      borderColor: 'rgb(255,140,0)',
+     },
+     music: {
+      name: "Music",
+      borderColor: 'rgb(0, 255, 191)',
+     },
+     animals: {
+      name: "Animals",
+      borderColor: 'rgb(157, 255, 0)',
+     },
+     nouns: {
+      name: "Nouns",
+      borderColor: 'rgb(251, 255, 0)',
+     },
+     verbs: {
+      name: "Verbs",
+      borderColor: 'rgb(0, 174, 255)',
+     },
+     adjetives: {
+      name: "Adjetives",
+      borderColor: 'rgb(162, 0, 255)',
+     },
+     general: {
+      name: "General",
+      borderColor: 'rgb(255, 0, 0)',
+     },
+   }
+   let types = Object.keys(battleTypes)
+   let id = battleTypes[types[Math.floor(Math.random() * types.length)]]
+   item.name = id.name
+   item.borderColor = id.borderColor
+  console.log(id)
+ }
+
 export function randomEvents(round,hp) {
   let randomEvents = []
   randomEvents.push(cards("item","battle"))
   randomEvents.push(cards("item","battle"))
+
+  randomBattle(randomEvents[0])
+  randomBattle(randomEvents[1])
+  
   let events = Object.keys(cards("list"));
   for (let i = 0; i < events.length; i++) {
     const item = cards("item",events[i])
@@ -168,6 +210,10 @@ export function randomEvents(round,hp) {
             }
           }
       
+        }
+        if (item.type === "battle") {
+          randomBattle(item)
+          //item.borderColor = 'rgb(255,140,0)'
         }
         randomEvents.push(item)
         if (randomEvents.length === 6) break

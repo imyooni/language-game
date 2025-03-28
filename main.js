@@ -75,7 +75,8 @@ function shuffleArray(array) {
 //███████████//
 
 
-const startGameContainer = document.querySelector('.startGame')
+//const startGameContainer = document.querySelector('.languageButton')
+const languageSelector = document.querySelector(".languageSelector");
 const monitorContainer = document.querySelector('.monitor')
 const tableContainer = document.querySelector('.table')
 const hpBar = document.querySelector('.hp-bar-container')
@@ -87,16 +88,51 @@ const booksContainer = document.querySelector('.books')
 const scoreContainer = document.querySelector('.score')
 
 
+const languages = {
+    en: { name: "English", flag: "./assets/Sprites/ENG.png" }, 
+    kor: { name: "한국어", flag: "./assets/Sprites/KOR.png" },  
+    es: { name: "Español", flag: "./assets/Sprites/ES.png" }, 
+};
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
-        showElements([startGameContainer], "show")
-    }, 100);
+        let elements = [languageSelector];
+        showElements(elements, "show");
+        languageButtons()
+    }, 200);
 });
 
+function languageButtons(){
+    Object.entries(languages).forEach(([code, data]) => {
+        const button = document.createElement("div");
+        button.classList.add("languageButton");
+        const flagImg = document.createElement("img");
+        flagImg.src = data.flag; 
+        button.appendChild(flagImg);
+        button.appendChild(document.createTextNode(`${data.name}`));
+        button.onclick = () => setLanguage(code);
+        languageSelector.appendChild(button);
+    });
+}
+
+function setLanguage(lang){
+    if (scene !== "intro") return
+    language = lang
+    scene = "game"
+    showElements([languageSelector], "hide")
+    setTimeout(() => {
+         languageSelector.style.zindex = "0"
+        initializeElements()
+    }, 500);
+}
 
 document.addEventListener("click", function (event) {
     if (scene !== "intro") return
-    let clickedItem = event.target.closest(".startGame");
+    let clickedItem = event.target.closest(".languageButton");
+    console.log("language")
+    return
     if (!clickedItem) return;
     scene = "game"
     showElements([startGameContainer], "hide")
@@ -285,10 +321,36 @@ function generateRandomCards() {
         } else {
             cardName = cardData.name;
         }
+        console.log(cardData.borderColor)
         card.style.backgroundColor = cardData.cardColor;
-        card.classList.add("card");
-        card.innerHTML = cardName;
-        card.dataset.cardData = JSON.stringify(cardData);
+        let topLine 
+        let bottomLine
+        if (cardData.borderColor) {
+            topLine = document.createElement("div");
+            topLine.style.position = "absolute";
+            topLine.style.top = "5px"; // Moves line slightly inside
+            topLine.style.left = "5%"; // Makes the line shorter
+            topLine.style.width = "90%"; // Shorter than full width
+            topLine.style.height = "2px";
+            topLine.style.border = "1px solid black";
+            topLine.style.backgroundColor = cardData.borderColor; // Use dynamic border color if needed
+            bottomLine = document.createElement("div");
+            bottomLine.style.position = "absolute";
+            bottomLine.style.bottom = "5px"; // Moves line inside at the bottom
+            bottomLine.style.left = "5%";
+            bottomLine.style.width = "90%";
+            bottomLine.style.border = "1px solid black";
+            bottomLine.style.height = "2px";
+            bottomLine.style.backgroundColor = cardData.borderColor;
+        }
+            card.classList.add("card");
+            card.innerHTML = cardName; // Set innerHTML BEFORE adding lines
+            card.dataset.cardData = JSON.stringify(cardData);
+        
+        if (topLine && bottomLine) {
+            card.appendChild(topLine);
+            card.appendChild(bottomLine);
+        }
         cardsContainer.appendChild(card);
 
         setTimeout(() => {
@@ -502,7 +564,7 @@ function displaySyllables(word, containerSelector) {
 
 
 function generateRandomWord() {
-    console.log(originalWord)
+  //  console.log(originalWord)
     let word = languageData.randomWord(originalWord)
     originalWord = word
 }
