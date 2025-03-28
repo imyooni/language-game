@@ -214,6 +214,37 @@ html {
     image-rendering: pixelated;
 }
 
+.rounds {
+    position: absolute;
+    background-image: url('./assets/Sprites/round.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    padding-bottom: 2px;
+    padding-left: 34px;
+    color: #ffffff;
+    font-family: 'DefaultFont';
+    font-size: 16px;
+    user-select: none;
+    text-shadow:
+        1px 1px 0px black,
+        -1px -1px 0px black,
+        1px -1px 0px black,
+        -1px 1px 0px black;
+    top: 11%;
+    left: 5px;
+    width: auto;
+    height: 42px;
+    text-align: center;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    z-index: 5;
+    transition: opacity 0.5s ease-out; 
+    opacity: 0;
+    image-rendering: pixelated;
+}
+
 .coins {
     position: absolute;
     background-image: url('./assets/Sprites/zuljaCoin.png');
@@ -494,11 +525,10 @@ html {
   }
 
   .syllableBorder {
-    width: auto; /* Let the width be determined by the content */
     top: 0%;
-    padding-left: 10px; /* Adds extra space on the left */
-    padding-right: 10px; /* Adds extra space on the right */
-    width: 10px;
+    padding-left: 5px; /* Adds extra space on the left */
+    padding-right: 5px; /* Adds extra space on the right */
+    width: auto;
     height: 32px;
     font-family: 'DefaultFont';
     font-size: 14px;
@@ -540,10 +570,9 @@ html {
 
 
   .wordBorder {
-    width: auto; /* Let the width be determined by the content */
-    padding-left: 10px; /* Adds extra space on the left */
-    padding-right: 10px; /* Adds extra space on the right */
-    width: 10px;
+    padding-left: 5px; /* Adds extra space on the left */
+    padding-right: 5px; /* Adds extra space on the right */
+    width: auto;
     height: 32px;
     font-family: 'DefaultFont';
     font-size: 14px;

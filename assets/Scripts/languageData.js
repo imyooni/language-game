@@ -41,7 +41,7 @@ export function cards(mode,id = null) {
     },
     healingI: {
       name: `HP`,
-      type: 'hp',
+      type: 'heal',
       cardColor: 'rgb(219, 20, 60)',
       value: ["per",[2,5]],
       round: 1,
@@ -49,7 +49,7 @@ export function cards(mode,id = null) {
     },
     elixir: {
       name: `HP`,
-      type: 'hp',
+      type: 'heal',
       cardColor: 'rgb(20, 219, 126)',
       value: ["per",[100,100]],
       round: 1,
@@ -58,14 +58,14 @@ export function cards(mode,id = null) {
     maxhp: {
       name: `Max HP`,
       type: 'mhp',
-      cardColor: 'rgb(219, 20, 60)',
+      cardColor: 'rgb(219, 20, 129)',
       value: ["per",[2,5]],
       round: 0,
       probability: 0.1,
     },
     damageI: {
       name: `HP`,
-      type: 'hp',
+      type: 'damage',
       cardColor: 'rgb(219, 20, 60)',
       value: ["per",[-2,-5]],
       round: 0,
@@ -108,21 +108,21 @@ export function cards(mode,id = null) {
       type: 'special',
       cardColor: 'rgb(152,251,152)',
       round: 1,
-      probability: 0.05,
+      probability: 0,
     },
     shop: {
       name: `Shop`,
       type: 'shop',
       cardColor: 'rgb(32, 139, 189)',
       round: 1,
-      probability: 0.15,
+      probability: 0,
     },
     chest: {
       name: `Chest`,
       type: 'chest',
       cardColor: 'rgb(255,105,180)',
       round: 1,
-      probability: 0.03,
+      probability: 0,
     },
     battle: {
       name: `Battle`,
@@ -148,6 +148,7 @@ export function randomEvents(round,hp) {
     const item = cards("item",events[i])
     if (item.probability === 0) continue
     if (item.round > round) continue
+    if (item.type === "heal" && hp[0] === hp[1]) continue 
       if (Math.random() < item.probability) {
         if (item.value !== undefined) {
           let name
@@ -175,54 +176,26 @@ export function randomEvents(round,hp) {
   return randomEvents
 }
 
+function arraysAreEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+  for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+  }
+  return true;
+}
 
 export function randomWord(prevWord) {
   const random_words = [
-    "amor", "casa", "libro", "mesa", "árbol", "cielo", "felicidad", "coche", "perro", "gato", 
-    "ciudad", "trabajo", "familia", "amigo", "país", "música", "sol", "luna", "mar", "montaña", 
-    "ventana", "puerta", "fuego", "agua", "comida", "ropa", "teléfono", "computadora", "papel", 
-    "silla", "zapato", "hospital", "escuela", "universidad", "cocina", "baño", "jardín", "película", 
-    "televisión", "vida", "muerte", "tiempo", "noche", "día", "luz", "oscuridad", "camino", "sendero", 
-    "tren", "avión", "barco", "bicicleta", "pelota", "sueño", "realidad", "historia", "memoria", 
-    "cultura", "arte", "lienzo", "pintura", "escultura", "fotografía", "espejo", "sombrero", 
-    "camisa", "pantalón", "falda", "diseño", "plan", "idea", "proyecto", "dibujo", "foto", 
-    "poesía", "canción", "sonrisa", "llanto", "corazón", "mente", "cuerpo", "alma", "espíritu", 
-    "sensación", "pensamiento", "pregunta", "respuesta", "acuerdo", "conflicto", "estrés", "paz", 
-    "guerra", "caos", "equilibrio", "movimiento", "estabilidad", "crecimiento", "desarrollo", 
-    "avance", "retroceso", "futuro", "pasado", "presente", "esperanza", "desesperación", "confianza", 
-    "miedo", "valentía", "temor", "felicidad", "tristeza", "odio", "amor", "compasión", "generosidad", 
-    "egoísmo", "solidaridad", "sociedad", "gente", "familia", "vecino", "trabajador", "jefe", "empleado", 
-    "empresa", "negocio", "contrato", "acuerdo", "economía", "dinero", "moneda", "banco", "mercado", 
-    "comercio", "intercambio", "inversión", "ahorro", "gasto", "riesgo", "seguridad", "crisis", "oportunidad", 
-    "tarea", "trabajo", "esfuerzo", "recompensa", "exito", "fracaso", "hombre", "mujer", "niño", "adolescente", 
-    "adulto", "anciano", "persona", "individuo", "grupo", "comunidad", "nación", "planeta", "universo", 
-    "tiempo", "espacio", "dimensión", "ciencia", "tecnología", "invención", "innovación", "descubrimiento", 
-    "teoría", "experimento", "investigación", "prueba", "error", "práctica", "experiencia", "conocimiento", 
-    "sabiduría", "educación", "aprendizaje", "escuela", "universidad", "profesor", "alumno", "estudiante", 
-    "materia", "asignatura", "tarea", "examen", "estudio", "colegio", "aula", "pupitre", "silla", "escritorio", 
-    "papelera", "libreta", "bolígrafo", "lapicero", "marcador", "carpeta", "cuaderno", "mochila", "agenda", 
-    "organizador", "tiempo", "horario", "programa", "reloj", "calendario", "día", "semana", "mes", "año", 
-    "estación", "verano", "invierno", "primavera", "otoño", "día", "noche", "mañana", "tarde", "futuro", 
-    "pasado", "presente", "luna", "sol", "estrella", "cielo", "nube", "viento", "tormenta", "huracán", "ciclón", 
-    "lluvia", "niebla", "frío", "calor", "temperatura", "clima", "terremoto", "volcán", "desastre", "catástrofe", 
-    "planeta", "tierras", "mar", "océano", "río", "lago", "pueblo", "ciudad", "metrópoli", "aldea", "zona", 
-    "barrio", "vecindad", "rural", "urbano", "suburbio", "periferia", "centro", "gente", "pueblo", "familia", 
-    "pareja", "matrimonio", "hermano", "hermana", "padre", "madre", "hijo", "hija", "abuelo", "abuela", 
-    "tío", "tía", "primo", "prima", "suegro", "suegra", "yerno", "nuera", "cuñado", "cuñada", "suegro", 
-    "compañero", "compañera", "amigo", "amistad", "relación", "confianza", "amor", "cariño", "envidia", 
-    "celos", "deseo", "pasión", "respeto", "odio", "odio", "venganza", "perdón", "reconciliación", "ayuda", 
-    "apoyo", "solidaridad", "servicio", "cuidado", "protección", "seguridad", "autonomía", "libertad", 
-    "justicia", "igualdad", "equidad", "derechos", "deberes", "ley", "gobierno", "estado", "política", 
-    "economía", "sociedad", "educación", "sanidad", "salud", "derechos humanos", "libertad", "opresión", 
-    "dictadura", "democracia", "sistema", "ideología", "moral", "ética", "especie", "evolución", "animal", 
-    "planta", "vegetal", "fósil", "mamífero", "insecto", "pájaro", "peces", "reptil", "anfibio", "animal", 
-    "crustáceo", "salvaje", "doméstico", "endémico", "especie", "fuerza", "energía", "potencia", "magnetismo", 
-    "electricidad", "físico", "químico", "biológico", "teórico", "experimental", "medición", "prueba", 
-    "cálculo", "hipótesis", "teoría", "investigación", "científico", "investigador", "descubrimiento", 
-    "proceso", "resultado", "avance", "prueba", "experimento"
+  ["fue","go"],["ar","ma"],["mu","ra","lla"],["ro","pa"],["es","quir","la"],["co","rrer"],
+  ["a","mor"],["rue","da"],["si","lla"],["mar"],["o","so"],["o","ro"],["mo","to"],["ar","bol"],
+  ["ru","le","ta"],["co","mi","sa","ria"],["pe","rro"],["mo","chi","la"],["es","cue","la"],["mi","ra","da"],
+  ["es","con","der"],["es","tre","lla"],["di","ne","ro"],["es","ta","dio"],["cruz"],["hie","lo"],
+  ["que","so"],["cos","mos"],["ta","len","to"],["len","to"],["ca","sa"],["a","mi","go"],["ra","yo"],
+  ["es","co","pe","ta"],["can","tar"],["pia","no"],["a","gua"],["ver","de"],["vio","le","ta"],["ru","sia"],
+  ["chi","na"],["es","pa","ña"],["co","me","ta"],["ga","la","xia"]
 ];
 
-  let filteredWords = random_words.filter(word => word !== prevWord);
+  let filteredWords = random_words.filter(word => !arraysAreEqual(word, prevWord));
   let randomWord = filteredWords[Math.floor(Math.random() * filteredWords.length)];
   return randomWord;
 }
