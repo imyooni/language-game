@@ -45,26 +45,6 @@ html {
     position: relative;
 }
 
-/* Landscape Mode */
-@media only screen and (orientation: landscape) {
-    .secondary-background {
-        width: 750px;  /* Adjust width for landscape */
-        height: 386px; /* Adjust height for landscape */
-    }
-}
-
-@media only screen and (orientation: portrait) {
-    body {
-        display: none; /* Hide body content in portrait mode */
-    }
-}
-
-/* Landscape Mode */
-@media only screen and (orientation: landscape) {
-    body {
-        display: flex; /* Show content only in landscape */
-    }
-}
 
 .languageButton {
     color: white;
