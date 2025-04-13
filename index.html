@@ -1,47 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍌</text></svg>">
-    <title>Language Practice</title>
-    <link rel="stylesheet" href="style.css"> <!-- Update if in subdirectories -->
+  <meta charset="UTF-8">
+  <title>Music Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="secondary-background">
-        <div class="hp-bar-container">
-            <div class="hp-bar"></div>
-        </div>
-        <p class="hp-text"></p>
-        <div class="languageSelector"></div>
-        <div id="word-container" class="word-container"></div>
-        <div id="syllable-container" class="syllable-container"></div>
-        <div id="card-container"></div>
-        <div class="coins"></div>
-        <div class="rounds"></div>
-        <div class="shield"></div>
-        <div class="books">
-          <div class="booksNumber"></div> 
-        </div>
-        <div class="score"></div>
-
-        <div class="enemy-hp-bar-container">
-            <div class="enemy-hp-bar"></div>
-        </div>
-        <p class="enemy-hp-text"></p>
-        <p class="enemy-name-text"></p>
-        
-        <div class="monitor">
-            <div class="monitorStand"></div>
-            <div class="monitorStandBottom"></div>
-            <div class="screen glow"></div> 
-            
-        </div>
-        
-        <div class="table"></div> 
-         
-    </div>
-    
-    <script type="module" src="main.js"></script>
+  <!-- Load Phaser FIRST -->
+  <script src="phaser.min.js"></script>
+  <div class="background" id="game-container"></div>
+  <!-- Then load your game logic -->
+  <script src="game.js"></script>
+  
 </body>
 </html>
